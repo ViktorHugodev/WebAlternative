@@ -6,7 +6,7 @@ import { Profile } from './Profile';
 import { UploadInput } from './UploadInput';
 
 export function Header() {
-	const { user, signIn } = useProps();
+	const { user, signIn, signOutAuth } = useProps();
 
 	return (
 		<Flex
@@ -23,7 +23,11 @@ export function Header() {
 			<Logo />
 
 			<UploadInput />
-			{!user ? <GoogleButton signIn={signIn} /> : <Profile user={user} />}
+			{!user ? (
+				<GoogleButton signIn={signIn} />
+			) : (
+				<Profile user={user} signOutAuth={signOutAuth} />
+			)}
 		</Flex>
 	);
 }

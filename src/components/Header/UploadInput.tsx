@@ -88,7 +88,7 @@ export function UploadInput() {
 
 						<Button
 							onClick={() => {
-								putVideos(db, link);
+								putVideos(db, link, user);
 								onClose();
 							}}
 							bg="none"

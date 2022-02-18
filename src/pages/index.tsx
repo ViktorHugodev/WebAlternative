@@ -1,12 +1,11 @@
 import { Grid } from '@chakra-ui/react';
 import { GetServerSideProps } from 'next';
+import { useEffect } from 'react';
 import Layout from '../components/Layout';
 import { VideoItem } from '../components/Video/VideoItem';
 import { db, getVideos } from '../firebase/initFirebase';
 
 export default function Home(data: any) {
-	// console.log('data: ', data);
-
 	return (
 		<Layout title="WebAlternative">
 			<Grid
@@ -41,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 	return {
 		props: {
-			data,
+			data: JSON.parse(JSON.stringify(data)),
 		},
 	};
 };

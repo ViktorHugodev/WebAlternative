@@ -1,11 +1,19 @@
-import { createContext, useState, useContext } from 'react';
-import app from '../firebase/initFirebase';
-import { initializeApp } from 'firebase/app';
-import Router from 'next/router';
-import firebase from '../firebase/initFirebase';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { saveUserData } from '../firebase/initFirebase';
+import { createContext, useState, useContext, useEffect } from 'react';
+import cookie from 'js-cookie';
+import {
+	getAuth,
+	signInWithPopup,
+	GoogleAuthProvider,
+	signOut,
+} from 'firebase/auth';
+import app, { saveUserData } from '../firebase/initFirebase';
+import {
+	setUserCookie,
+	removeUserCookie,
+	getUserFromCookie,
+} from '../firebase/userCookies';
 import 'firebase/auth';
+import router from 'next/router';
 
 const PropsContext = createContext({});
 interface UserProps {
@@ -27,7 +35,18 @@ export function PropsProvider({ children }: any) {
 	const [loading, setLoading] = useState<boolean>(true);
 	const auth = getAuth();
 	const provider = new GoogleAuthProvider();
-	function signIn() {
+
+	// const setSession = (session: any) => {
+	// 	if (session) {
+	// 		cookie.set('auth', session, {
+	// 			expires: 1,
+	// 		});
+	// 	} else {
+	// 		cookie.remove('auth');
+	// 	}
+	// };
+
+	async function signIn() {
 		setLoading(true);
 		signInWithPopup(auth, provider)
 			.then((result) => {
@@ -37,6 +56,7 @@ export function PropsProvider({ children }: any) {
 				// The signed-in user info.
 				setUser(result.user);
 				saveUserData(result.user);
+				// setSession(true);
 				setLoading(false);
 			})
 			.catch((error) => {
@@ -50,9 +70,48 @@ export function PropsProvider({ children }: any) {
 				// ...
 			});
 	}
+	function signOutAuth() {
+		signOut(auth)
+			.then(() => {
+				removeUserCookie();
+				setUser(null);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}
+
+	useEffect(() => {
+		// Firebase updates the id token every hour, this
+		// makes sure the react state and the cookie are
+		// both kept up to date
+		const cancelAuthListener = auth.onIdTokenChanged(async (user) => {
+			if (user) {
+				const userData = user;
+				setUserCookie(JSON.stringify(userData));
+				setUser(userData);
+			} else {
+				removeUserCookie();
+				setUser(null);
+			}
+		});
+
+		const userFromCookie = getUserFromCookie();
+		if (!userFromCookie) {
+			router.push('/');
+			return;
+		}
+		setUser(userFromCookie);
+
+		return () => {
+			cancelAuthListener();
+		};
+	}, []);
 
 	return (
-		<PropsContext.Provider value={{ user, loading, signIn, search }}>
+		<PropsContext.Provider
+			value={{ user, loading, signIn, search, signOutAuth }}
+		>
 			{children}
 		</PropsContext.Provider>
 	);

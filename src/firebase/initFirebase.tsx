@@ -8,10 +8,13 @@ import {
 	increment,
 	getDoc,
 	doc,
-} from 'firebase/firestore/lite';
+	documentId,
+	refEqual,
+	setDoc,
+} from 'firebase/firestore';
 import api from '../services/youtube';
+// import { setUserCookie} from 'firebase/userCookies'
 import 'firebase/auth';
-import { useProps } from '../hooks/PropsContext';
 
 // import { getAnalytics } from "firebase/analytics";
 // import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
@@ -38,7 +41,8 @@ export async function getVideos(db: any) {
 	return videosList;
 }
 
-export async function putVideos(db: any, link: string) {
+export async function putVideos(db: any, link: string, user: any) {
+	const { uid, displayName } = user;
 	const res = await api.get(
 		`/videos?key=${
 			process.env.NEXT_PUBLIC_YT_API_KEY
@@ -57,6 +61,11 @@ export async function putVideos(db: any, link: string) {
 					videoId: data.id,
 					likes: 0,
 					unlikes: 0,
+					userId: user.uid,
+					userPhoto: user.photoURL,
+					displayName: user.displayName.split(' ').slice(0, 2).join(' '),
+					fullName: user.displayName,
+					addAt: new Date().getTime(),
 				});
 
 				console.log('Worked', newVideo.id);
@@ -68,27 +77,26 @@ export async function putVideos(db: any, link: string) {
 
 export const saveUserData = async (user: any) => {
 	const { uid, displayName, email, photoURL } = user;
-	const userCol = collection(db, 'users');
-	const doctemp = await getDocs(userCol);
-	const snap = doctemp.docs.map(async (doc) => {
-		console.log(`USEDB:${doc.data().uid} meu uid: ${uid}`);
-		if ((await doc.data().uid) !== uid || doc.data().uid === null) {
-			await saveDb(user);
-		}
-	});
-	// saveDb(user);
+	const usersRef = doc(db, 'users', uid);
+	const docSnap = await getDoc(usersRef);
+	if (docSnap.exists()) {
+		console.log('Usuário já existe:', docSnap.data());
+	} else {
+		console.log('Usuário não encontrado:');
+		saveDb(user);
+	}
 };
 const saveDb = async (user: any) => {
 	const { uid, displayName, email, photoURL } = user;
 	try {
-		const newUser = await addDoc(collection(db, 'users'), {
+		const newUser = await setDoc(doc(db, 'users', uid), {
 			uid,
 			displayName,
 			email,
 			photoURL,
 			likes: [],
 		});
-		console.log('Write doc:', newUser.id);
+		console.log('Write doc:', newUser);
 	} catch (error) {
 		console.error('Error:', error);
 	}
