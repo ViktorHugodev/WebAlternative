@@ -57,8 +57,8 @@ export async function putVideos(db: any, link: string, user: any) {
 					unlikes: 0,
 					userId: uid,
 					userPhoto: photoURL,
-					displayName: displayName.split(' '),
-					fullName: displayName.split(' ').slice(0, 2).join(' '),
+					fullName: displayName,
+					displayName: displayName.split(' ').slice(0, 2).join(' '),
 					addAt: new Date().getTime(),
 				});
 
@@ -86,8 +86,8 @@ const saveDb = async (user: any) => {
 	try {
 		const newUser = await setDoc(doc(db, 'users', uid), {
 			uid,
-			displayName,
-			email,
+			fullname: displayName,
+			displayName: displayName.split(' ').slice(0, 2).join(' '),
 			photoURL,
 			likes: [],
 		});

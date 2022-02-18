@@ -15,7 +15,7 @@ interface VideoProps {
 		};
 	};
 }
-export function VideoCard({ item }: VideoProps) {
+export function VideoCard({ item }: any) {
 	return (
 		<Box>
 			<AspectRatio maxW="480px" ratio={16 / 9}>

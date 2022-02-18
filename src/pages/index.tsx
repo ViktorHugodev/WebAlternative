@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 	return {
 		props: {
-			data,
+			data: JSON.parse(JSON.stringify(data)),
 		},
 	};
 };

@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { putVideos, db } from '../../firebase/initFirebase';
 import { BiVideoPlus } from 'react-icons/bi';
 import { useProps } from '../../hooks/PropsContext';
+
 export function UploadInput() {
 	const OverlayOne = () => (
 		<ModalOverlay

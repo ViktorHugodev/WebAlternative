@@ -30,7 +30,7 @@ interface VideoProps {
 		};
 	};
 }
-export function VideoItem({ item }: VideoProps) {
+export function VideoItem({ item }: any) {
 	const { user } = useProps();
 	// const [isLike, setIsLike] = useState(false);
 	// const [historyLikes, setHistoryLikes] = useState([]);
@@ -59,7 +59,7 @@ export function VideoItem({ item }: VideoProps) {
 					{item.item.title}
 				</Text>
 			</Box>
-			<Box>
+			<Flex>
 				<Flex align="center">
 					<IconButton
 						// onClick={like}
@@ -90,15 +90,17 @@ export function VideoItem({ item }: VideoProps) {
 					<Text fontSize="12px" color="gray.200">
 						{item.item.unlikes}
 					</Text>
-					<Text fontSize="14px">Add por:{item.item?.displayName}</Text>
+				</Flex>
+				<Flex align="center" justify="flex-end" flex="1">
+					<Text fontSize="14px">{item.item?.displayName}</Text>
 					<Avatar
 						src={item.item?.userPhoto}
 						name={item.item?.displayName}
 						size="sm"
-						mr="4"
+						mx="4"
 					/>
 				</Flex>
-			</Box>
+			</Flex>
 		</GridItem>
 	);
 }
