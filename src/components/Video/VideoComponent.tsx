@@ -1,7 +1,21 @@
 import { Box, AspectRatio } from '@chakra-ui/react';
-
-export function VideoCard({ item }: any) {
-	// console.log(item);
+interface VideoProps {
+	item: {
+		item: {
+			addAt: string;
+			description: string;
+			displayName: string;
+			publishedAt: string;
+			title: string;
+			userId: string;
+			userPhoto: string;
+			videoId: string;
+			likes: number;
+			unlikes: number;
+		};
+	};
+}
+export function VideoCard({ item }: VideoProps) {
 	return (
 		<Box>
 			<AspectRatio maxW="480px" ratio={16 / 9}>

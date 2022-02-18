@@ -3,8 +3,21 @@ import { BiVideoPlus } from 'react-icons/bi';
 import { putVideos, db } from '../../firebase/initFirebase';
 
 import { useState } from 'react';
-
+import { useProps } from '../../hooks/PropsContext';
+// interface UserProps {
+// 	uid: string;
+// 	email: string;
+// 	name: string;
+// 	token: string;
+// 	provider: any;
+// 	providerURL: string;
+// }
+// interface User {
+// 	user: UserProps[];
+// }
 export function UploadButton() {
+	const { user } = useProps();
+	console.log(user);
 	const [link, setLink] = useState('');
 	return (
 		<>
@@ -17,7 +30,7 @@ export function UploadButton() {
 
 				<Flex align="center" ml="auto">
 					<Button
-						onClick={() => putVideos(db, link)}
+						onClick={() => putVideos(db, link, user)}
 						bg="none"
 						variant="link"
 						color="gray.100"

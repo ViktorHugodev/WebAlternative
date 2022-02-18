@@ -1,14 +1,16 @@
-import { Flex, Avatar, Text, Button } from '@chakra-ui/react';
+import { Flex, Avatar, Text, Button, useProps } from '@chakra-ui/react';
 
 interface ProfileProps {
 	photoURL: string;
 	displayName: string;
+	email: string;
 }
 interface User {
 	signOutAuth: () => void;
 	user: ProfileProps;
 }
 export function Profile({ user, signOutAuth }: User) {
+	// const {signOutAuth} = useProps()
 	function formatName(name: string) {
 		const nameBefore = `${user?.displayName.split(' ')[0]} ${
 			user?.displayName.split(' ')[1]

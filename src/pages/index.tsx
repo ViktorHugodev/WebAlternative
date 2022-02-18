@@ -4,8 +4,10 @@ import { useEffect } from 'react';
 import Layout from '../components/Layout';
 import { VideoItem } from '../components/Video/VideoItem';
 import { db, getVideos } from '../firebase/initFirebase';
-
+import { useProps } from '../hooks/PropsContext';
 export default function Home(data: any) {
+	const { user } = useProps();
+	console.log(user);
 	return (
 		<Layout title="WebAlternative">
 			<Grid
@@ -25,8 +27,6 @@ export default function Home(data: any) {
 	);
 }
 
-//300x168
-
 export const getServerSideProps: GetServerSideProps = async () => {
 	const response = await getVideos(db);
 	const data = response;
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 	return {
 		props: {
-			data: JSON.parse(JSON.stringify(data)),
+			data,
 		},
 	};
 };

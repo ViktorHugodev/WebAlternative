@@ -11,15 +11,9 @@ import {
 	documentId,
 	refEqual,
 	setDoc,
-} from 'firebase/firestore';
+} from 'firebase/firestore/lite';
 import api from '../services/youtube';
-// import { setUserCookie} from 'firebase/userCookies'
 import 'firebase/auth';
-
-// import { getAnalytics } from "firebase/analytics";
-// import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
-
-// const provider = new GoogleAuthProvider();
 
 const clientCredentials = {
 	apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY,
@@ -42,7 +36,7 @@ export async function getVideos(db: any) {
 }
 
 export async function putVideos(db: any, link: string, user: any) {
-	const { uid, displayName } = user;
+	const { uid, displayName, photoURL } = user;
 	const res = await api.get(
 		`/videos?key=${
 			process.env.NEXT_PUBLIC_YT_API_KEY
@@ -61,16 +55,17 @@ export async function putVideos(db: any, link: string, user: any) {
 					videoId: data.id,
 					likes: 0,
 					unlikes: 0,
-					userId: user.uid,
-					userPhoto: user.photoURL,
-					displayName: user.displayName.split(' ').slice(0, 2).join(' '),
-					fullName: user.displayName,
+					userId: uid,
+					userPhoto: photoURL,
+					displayName: displayName.split(' '),
+					fullName: displayName.split(' ').slice(0, 2).join(' '),
 					addAt: new Date().getTime(),
 				});
 
 				console.log('Worked', newVideo.id);
 			} catch (err) {
 				console.error('[ERROR][PutVideos]:', err);
+				console.error('[ERROR][]:', uid);
 			}
 		})();
 }

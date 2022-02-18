@@ -1,36 +1,31 @@
-import { createContext, useState, useContext, useEffect } from 'react';
-import cookie from 'js-cookie';
+import { createContext, useContext, useEffect, useState } from 'react';
 import {
 	getAuth,
-	signInWithPopup,
 	GoogleAuthProvider,
+	signInWithPopup,
 	signOut,
 } from 'firebase/auth';
-import app, { saveUserData } from '../firebase/initFirebase';
-import {
-	setUserCookie,
-	removeUserCookie,
-	getUserFromCookie,
-} from '../firebase/userCookies';
+import { saveUserData } from '../firebase/initFirebase';
 import 'firebase/auth';
+import {
+	getUserFromCookie,
+	removeUserCookie,
+	setUserCookie,
+} from '../firebase/userCookies';
 import router from 'next/router';
-
-const PropsContext = createContext({});
 interface UserProps {
 	uid: string;
 	email: string;
-	name: string;
-	token: string;
-	provider: any;
-	providerURL: string;
+	displayName: string;
+	likes?: number[];
 }
 interface User {
 	user: UserProps[];
 }
+const PropsContext = createContext({});
 
 export function PropsProvider({ children }: any) {
 	const [isLike, setIsLike] = useState<boolean>(false);
-	const [search, setSearch] = useState<string>('');
 	const [user, setUser] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const auth = getAuth();
@@ -46,7 +41,7 @@ export function PropsProvider({ children }: any) {
 	// 	}
 	// };
 
-	async function signIn() {
+	function signIn() {
 		setLoading(true);
 		signInWithPopup(auth, provider)
 			.then((result) => {
@@ -58,6 +53,7 @@ export function PropsProvider({ children }: any) {
 				saveUserData(result.user);
 				// setSession(true);
 				setLoading(false);
+				console.log(user);
 			})
 			.catch((error) => {
 				// Handle Errors here.
@@ -67,6 +63,7 @@ export function PropsProvider({ children }: any) {
 				const email = error.email;
 				// The AuthCredential type that was used.
 				const credential = GoogleAuthProvider.credentialFromError(error);
+				console.log('ERRO: SignIn:', error);
 				// ...
 			});
 	}
@@ -101,7 +98,7 @@ export function PropsProvider({ children }: any) {
 			router.push('/');
 			return;
 		}
-		setUser(userFromCookie);
+		// setUser(userFromCookie);
 
 		return () => {
 			cancelAuthListener();
@@ -109,9 +106,7 @@ export function PropsProvider({ children }: any) {
 	}, []);
 
 	return (
-		<PropsContext.Provider
-			value={{ user, loading, signIn, search, signOutAuth }}
-		>
+		<PropsContext.Provider value={{ user, loading, signIn, signOutAuth }}>
 			{children}
 		</PropsContext.Provider>
 	);

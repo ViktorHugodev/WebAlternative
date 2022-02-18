@@ -22,7 +22,7 @@ export function Header() {
 		>
 			<Logo />
 
-			<UploadInput />
+			<UploadInput user={user} />
 			{!user ? (
 				<GoogleButton signIn={signIn} />
 			) : (

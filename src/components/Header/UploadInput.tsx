@@ -27,11 +27,12 @@ export function UploadInput() {
 			backdropFilter="blur(10px) hue-rotate(90deg)"
 		/>
 	);
-	const { user } = useProps();
+
 	const toast = useToast();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [overlay, setOverlay] = useState(<OverlayOne />);
 	const [link, setLink] = useState('');
+	const { user } = useProps();
 	return (
 		<>
 			<Button
@@ -44,6 +45,7 @@ export function UploadInput() {
 				}}
 				onClick={() => {
 					if (user === null) {
+						console.log(user);
 						toast({
 							title: 'Login necessário! Faça login para continuar',
 							description:
@@ -53,6 +55,7 @@ export function UploadInput() {
 							isClosable: true,
 						});
 					} else {
+						console.log(user);
 						setOverlay(<OverlayOne />);
 						onOpen();
 					}

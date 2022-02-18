@@ -13,24 +13,41 @@ import { updateDoc, increment, doc, getDoc } from 'firebase/firestore/lite';
 import app, { db } from '../../firebase/initFirebase';
 import { useProps } from '../../hooks/PropsContext';
 import { collection, getDocs } from 'firebase/firestore/lite';
-export function VideoItem({ item, index }: any) {
+
+interface VideoProps {
+	item: {
+		item: {
+			addAt: string;
+			description: string;
+			displayName: string;
+			publishedAt: string;
+			title: string;
+			userId: string;
+			userPhoto: string;
+			videoId: string;
+			likes: number;
+			unlikes: number;
+		};
+	};
+}
+export function VideoItem({ item }: VideoProps) {
 	const { user } = useProps();
-	const [isLike, setIsLike] = useState(false);
-	const [historyLikes, setHistoryLikes] = useState([]);
-	const [likeCount, setLikeCount] = useState(item.item.like);
+	// const [isLike, setIsLike] = useState(false);
+	// const [historyLikes, setHistoryLikes] = useState([]);
+	// const [likeCount, setLikeCount] = useState(item.item.like);
 
-	async function like(item: any) {
-		if (user) {
-			setIsLike(true);
-			// let allLikes = [...historyLikes, item.item.id]
-			let likeTemp = likeCount + 1;
-			setLikeCount(likeTemp);
+	// async function like(item: any) {
+	// 	if (user) {
+	// 		setIsLike(true);
+	// 		// let allLikes = [...historyLikes, item.item.id]
+	// 		let likeTemp = likeCount + 1;
+	// 		setLikeCount(likeTemp);
 
-			await updateDoc(doc(db, 'videos', item.id), {
-				likes: increment(1),
-			});
-		}
-	}
+	// 		await updateDoc(doc(db, 'videos', item.id), {
+	// 			likes: increment(1),
+	// 		});
+	// 	}
+	// }
 
 	return (
 		<GridItem w="360px" boxShadow="2xl" borderRadius="sm">
@@ -45,7 +62,7 @@ export function VideoItem({ item, index }: any) {
 			<Box>
 				<Flex align="center">
 					<IconButton
-						onClick={like}
+						// onClick={like}
 						transition="all .3s"
 						bg="none"
 						_hover={{
