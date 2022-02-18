@@ -1,12 +1,18 @@
-import { initializeApp,  } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import {
 	getFirestore,
 	collection,
 	getDocs,
 	addDoc,
+	updateDoc,
+	increment,
+	getDoc,
+	doc,
 } from 'firebase/firestore/lite';
 import api from '../services/youtube';
 import 'firebase/auth';
+import { useProps } from '../hooks/PropsContext';
+
 // import { getAnalytics } from "firebase/analytics";
 // import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 
@@ -59,5 +65,33 @@ export async function putVideos(db: any, link: string) {
 			}
 		})();
 }
+
+export const saveUserData = async (user: any) => {
+	const { uid, displayName, email, photoURL } = user;
+	const userCol = collection(db, 'users');
+	const doctemp = await getDocs(userCol);
+	const snap = doctemp.docs.map(async (doc) => {
+		console.log(`USEDB:${doc.data().uid} meu uid: ${uid}`);
+		if ((await doc.data().uid) !== uid || doc.data().uid === null) {
+			await saveDb(user);
+		}
+	});
+	// saveDb(user);
+};
+const saveDb = async (user: any) => {
+	const { uid, displayName, email, photoURL } = user;
+	try {
+		const newUser = await addDoc(collection(db, 'users'), {
+			uid,
+			displayName,
+			email,
+			photoURL,
+			likes: [],
+		});
+		console.log('Write doc:', newUser.id);
+	} catch (error) {
+		console.error('Error:', error);
+	}
+};
 
 export default app;
