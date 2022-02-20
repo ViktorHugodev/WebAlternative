@@ -1,4 +1,5 @@
 import { getDatabase, query, ref, update } from 'firebase/database';
+import Link from 'next/link';
 import {
 	GridItem,
 	Text,
@@ -53,14 +54,22 @@ interface VideoProps {
 export function VideoItem({ item }: VideoProps) {
 	const { user } = useProps();
 	const [isLike, setIsLike] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [isUnlike, setIsUnLike] = useState(false);
 	const [historyLikes, setHistoryLikes] = useState<any>([]);
 	const [likeCount, setLikeCount] = useState(item.item.liked.length);
 	const [unlikeCount, setUnlikeCount] = useState(item.item.unliked.length);
-	let likeTemp = likeCount;
-	let unlikeTemp = unlikeCount;
+
+	// async function checkLiked() {
+	// 	if (user) {
+	//     const docRef = doc(db, 'videos', item.item.videoId);
+	// 		const docGet = await getDoc(docRef);
+	// 	}
+	// }
+
 	async function like() {
 		if (user) {
-			setIsLike(true);
+			setLoading(true);
 			const docRef = doc(db, 'videos', item.item.videoId);
 
 			const docGet = await getDoc(docRef);
@@ -74,12 +83,14 @@ export function VideoItem({ item }: VideoProps) {
 							liked: arrayRemove(user.uid),
 						});
 						console.log('Removeu like');
+						setIsLike(false);
 						setLikeCount(likeCount - 1);
 					} else {
 						await updateDoc(doc(db, 'videos', item.item.videoId), {
 							liked: arrayUnion(user.uid),
 						});
 						setLikeCount(likeCount + 1);
+						setIsLike(true);
 						console.log('Adicionou like');
 						if (refUnliked.includes(user.uid)) {
 							await updateDoc(doc(db, 'videos', item.item.videoId), {
@@ -87,19 +98,18 @@ export function VideoItem({ item }: VideoProps) {
 							});
 							console.log('Removeu unlike');
 							setUnlikeCount(unlikeCount - 1);
+							setIsUnLike(false);
 						}
 					}
 				}
-
-				console.log('like temp', likeTemp);
-				console.log('unlike temp', unlikeTemp);
-
+				setLoading(false);
 				return;
 			}
 		}
 	}
 	async function unlike() {
 		if (user) {
+			setLoading(true);
 			setIsLike(false);
 			const docRef = doc(db, 'videos', item.item.videoId);
 			const docGet = await getDoc(docRef);
@@ -129,6 +139,7 @@ export function VideoItem({ item }: VideoProps) {
 						}
 					}
 				}
+				setLoading(false);
 				return;
 			}
 		}
@@ -136,19 +147,26 @@ export function VideoItem({ item }: VideoProps) {
 
 	return (
 		<GridItem w="360px" boxShadow="2xl" borderRadius="sm">
-			<Box>
-				<VideoCard item={item} />
-			</Box>
-			<Box minH="60px">
-				<Text fontSize="sm" align="center">
-					{item.item.title}
-				</Text>
-			</Box>
+			<Link href={`/${item.item.videoId}`}>
+				<a href="">
+					<Box>
+						<VideoCard item={item} />
+					</Box>
+					<Flex minH="60px" justify="center" align="center">
+						<Text fontSize="md" align="center" fontWeight="bold">
+							{item.item.title}
+						</Text>
+					</Flex>
+				</a>
+			</Link>
 			<Flex>
 				<Flex align="center">
 					<IconButton
+						zIndex="2"
 						onClick={like}
+						isLoading={loading}
 						transition="all .3s"
+						isDisabled={user ? false : true}
 						bg="none"
 						_hover={{
 							bg: 'none',
@@ -164,13 +182,16 @@ export function VideoItem({ item }: VideoProps) {
 					</Text>
 					<IconButton
 						onClick={unlike}
+						isDisabled={user ? false : true}
 						transition="all .3s"
+						isLoading={loading}
 						_hover={{
 							bg: 'none',
 							filter: 'brightness(.8)',
 							transform: 'scale(1.2)',
 						}}
 						bg="none"
+						variant="ghost"
 						aria-label="deslike"
 						icon={<AiOutlineDislike />}
 					/>

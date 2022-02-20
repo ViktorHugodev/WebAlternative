@@ -5,16 +5,18 @@ import Layout from '../components/Layout';
 import { VideoItem } from '../components/Video/VideoItem';
 import { db, getVideos } from '../firebase/initFirebase';
 import { useProps } from '../hooks/PropsContext';
+import api from '../services/youtube';
 export default function Home(data: any) {
 	const { user } = useProps();
-	console.log(user);
+	console.log(data);
 	return (
 		<Layout title="WebAlternative">
 			<Grid
 				templateColumns={{
 					sm: '1fr 1fr',
-					md: '1fr 1fr 1fr',
-					lg: 'repeat(4, 1fr)',
+					md: '1fr 1fr ',
+					lg: 'repeat(3, 1fr)',
+					xl: 'repeat(4, 1fr)',
 				}}
 				gap={4}
 				p="4"
@@ -40,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 	return {
 		props: {
-			data: JSON.parse(JSON.stringify(data)),
+			data,
 		},
 	};
 };

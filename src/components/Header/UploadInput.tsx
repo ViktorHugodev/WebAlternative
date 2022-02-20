@@ -85,7 +85,10 @@ export function UploadInput() {
 							color="gray.100"
 							_hover={{ filter: 'brightness(.8)' }}
 							bg="red.500"
-							onClick={onClose}
+							onClick={() => {
+								onClose;
+								setLink('');
+							}}
 						>
 							Close
 						</Button>
@@ -94,6 +97,7 @@ export function UploadInput() {
 							onClick={() => {
 								putVideos(db, link, user);
 								onClose();
+								setLink('');
 							}}
 							bg="none"
 							variant="outline"
