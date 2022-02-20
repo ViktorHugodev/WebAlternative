@@ -1,4 +1,12 @@
 import { Grid } from '@chakra-ui/react';
+import {
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	orderBy,
+	query,
+} from 'firebase/firestore/lite';
 import { GetServerSideProps } from 'next';
 import { useEffect } from 'react';
 import Layout from '../components/Layout';
@@ -6,7 +14,7 @@ import { VideoItem } from '../components/Video/VideoItem';
 import { db, getVideos } from '../firebase/initFirebase';
 import { useProps } from '../hooks/PropsContext';
 import api from '../services/youtube';
-export default function Home(data: any) {
+export default function Home({ data }: any) {
 	const { user } = useProps();
 	console.log(data);
 	return (
@@ -21,7 +29,7 @@ export default function Home(data: any) {
 				gap={4}
 				p="4"
 			>
-				{data.data.map((item: any, index: number) => {
+				{data.map((item: any, index: number) => {
 					return <VideoItem key={item.id} item={{ item }} />;
 				})}
 			</Grid>
@@ -31,7 +39,12 @@ export default function Home(data: any) {
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const response = await getVideos(db);
-	const data = response;
+
+	// const docRef = doc(db, 'videos');
+	const videosCol = collection(db, 'videos');
+	const queryByOrderLiked = query(videosCol, orderBy('liked', 'desc'));
+	const querySnap = await getDocs(queryByOrderLiked);
+	const data = querySnap.docs.map((doc) => doc.data());
 	// const response = await youtube.get('/videos', {
 	//Aqui eu consigo pegar os parametros de um videp
 	// 	params: { order: 'rating' },
@@ -42,14 +55,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 	return {
 		props: {
-			data,
+			data: JSON.parse(JSON.stringify(data)),
 		},
 	};
 };
-
-// const original = post.snippet.description;
-// const limit = 100;
-
-// const description = (original.length > limit) ? `${original.substring(0, original.indexOf(' ', limit))}...` : original;
-
-// {`${item.views} • ${dayjs(item.snippet.publisehdAt).fromNow()}`}
