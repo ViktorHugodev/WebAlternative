@@ -31,7 +31,7 @@ export default function VideoPage({ data }: DataProps) {
 			<Box p="6" overflow="hidden">
 				<AspectRatio
 					maxW="full"
-					maxH="100vh"
+					// maxH="100vh"
 					flex="1"
 					ratio={16 / 9}
 					boxShadow="dark-lg"
@@ -42,7 +42,7 @@ export default function VideoPage({ data }: DataProps) {
 						allowFullScreen
 					></iframe>
 				</AspectRatio>
-				<Flex px="8" justify="space-between">
+				<Flex px="8" justify="space-between" overflow="hidden">
 					<InfoViewCard data={data} />
 					<ProfileVideoCard data={data} />
 				</Flex>

@@ -10,7 +10,7 @@ interface LayoutProps {
 
 export default function Layout({ children, title }: LayoutProps) {
 	return (
-		<Container w="100vw" overflow={'hidden'} maxWidth="1560px" p="0">
+		<Container w="100%" overflow={'hidden'} maxWidth="1660px" p="0">
 			<Head>
 				<title>{title}</title>
 			</Head>
