@@ -50,7 +50,7 @@ export function UploadInput() {
 						toast({
 							title: 'Login necessário! Faça login para continuar',
 							description:
-								'É necessário estar logado para adicionarm novo vídeo.',
+								'É necessário estar logado para adicionar um novo vídeo.',
 							status: 'error',
 							duration: 4000,
 							isClosable: true,
