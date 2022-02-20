@@ -28,14 +28,12 @@ export default function ProfileVideoCard({ data }: DataProps) {
 	return (
 		<Box overflow="hidden">
 			<Box
-				overflow="hidden"
 				// maxW={'445px'}
 				w={'full'}
 				bg="black.dark"
 				boxShadow={'2xl'}
 				rounded={'md'}
 				p={6}
-				overflow={'hidden'}
 			>
 				<Stack mt={6} direction={'row'} spacing={4} align={'center'}>
 					<Avatar src={data.userPhoto} />
