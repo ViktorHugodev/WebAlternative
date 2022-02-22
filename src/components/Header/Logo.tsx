@@ -6,13 +6,14 @@ export function Logo() {
 		<Link href="/">
 			<a>
 				<Text
-					fontSize={['2xl', '3xl']}
+					fontSize={['xl', '2xl', '3xl']}
 					fontWeight="bold"
 					letterSpacing="tight"
-					w="64"
+					maxW="64"
+					ml="2"
 				>
 					WebAlternative
-					<Text as="span" ml="1" color="red.500">
+					<Text as="span" ml="1" mr="2" color="red.500">
 						.
 					</Text>
 				</Text>

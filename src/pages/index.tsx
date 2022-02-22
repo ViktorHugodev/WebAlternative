@@ -40,6 +40,7 @@ export default function Home({ data }: DataProps) {
 	return (
 		<Layout title="WebAlternative">
 			<Grid
+				mx="0 auto"
 				templateColumns={{
 					sm: '1fr 1fr',
 					md: '1fr 1fr ',

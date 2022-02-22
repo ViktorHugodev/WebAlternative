@@ -1,8 +1,9 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, useBreakpointValue } from '@chakra-ui/react';
 import { useProps } from '../../hooks/PropsContext';
 import GoogleButton from './GoogleLoginButton';
 import { Logo } from './Logo';
 import { Profile } from './Profile';
+import { UploadButton } from './UploadButton';
 import { UploadInput } from './UploadInput';
 
 export function Header() {
@@ -18,7 +19,7 @@ export function Header() {
 			boxShadow="xl"
 			px="6"
 			align="center"
-			justifyContent="space-between"
+			justifyContent={{ sm: 'space-between', base: 'center' }}
 		>
 			<Logo />
 

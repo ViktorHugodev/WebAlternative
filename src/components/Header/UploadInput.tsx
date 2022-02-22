@@ -1,25 +1,26 @@
 import {
+	Button,
+	Icon,
+	Input,
 	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
-	Button,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
 	Text,
+	useBreakpointValue,
 	useDisclosure,
-	Input,
-	Icon,
-	Flex,
-	Box,
-	Spacer,
 	useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { putVideos, db } from '../../firebase/initFirebase';
 import { BiVideoPlus } from 'react-icons/bi';
+import { db, putVideos } from '../../firebase/initFirebase';
 import { useProps } from '../../hooks/PropsContext';
+interface UploadProps {
+	isMobile: any;
+}
 
 export function UploadInput() {
 	const OverlayOne = () => (
@@ -34,6 +35,11 @@ export function UploadInput() {
 	const [overlay, setOverlay] = useState(<OverlayOne />);
 	const [link, setLink] = useState('');
 	const { user } = useProps();
+	const isMobile = useBreakpointValue({
+		md: true,
+		base: false,
+	});
+
 	return (
 		<>
 			<Button
@@ -46,7 +52,6 @@ export function UploadInput() {
 				}}
 				onClick={() => {
 					if (user === null) {
-						console.log(user);
 						toast({
 							title: 'Login necessário! Faça login para continuar',
 							description:
@@ -56,14 +61,13 @@ export function UploadInput() {
 							isClosable: true,
 						});
 					} else {
-						console.log(user);
 						setOverlay(<OverlayOne />);
 						onOpen();
 					}
 				}}
 			>
-				<Text>Adicione seu vídeo a plataforma</Text>
-				<Icon as={BiVideoPlus} fontSize="28" ml="4" />
+				{isMobile && <Text>Adicione seu vídeo a plataforma</Text>}
+				<Icon as={BiVideoPlus} fontSize="28" ml={['0', '0', '4']} />
 			</Button>
 
 			<Modal isCentered isOpen={isOpen} onClose={onClose}>

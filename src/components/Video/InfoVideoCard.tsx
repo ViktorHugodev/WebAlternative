@@ -29,15 +29,8 @@ interface DataProps {
 }
 export default function InfoViewCard({ data }: DataProps) {
 	return (
-		<Box overflow="hidden">
-			<Box
-				maxW={'445px'}
-				w={'full'}
-				bg="black.dark"
-				boxShadow={'2xl'}
-				rounded={'md'}
-				p={6}
-			>
+		<Box overflow="hidden" boxShadow={'2xl'}>
+			<Box maxW={'445px'} w={'full'} bg="black.dark" rounded={'md'} p={6}>
 				<Stack mt={2} direction={'row'} spacing={4} align={'center'}>
 					<Stack direction={'column'} spacing={0} fontSize={'sm'}>
 						<Box my="4">
