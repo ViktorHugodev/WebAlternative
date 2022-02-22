@@ -65,30 +65,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 	//const queryConstraints = [orderByChild('liked')];
 
-	const queryByOrderLiked = query(videosCol, orderBy('liked', 'desc'));
+	const queryByOrderLiked = query(videosCol, orderBy('likes', 'desc'));
 	const querySnap = await getDocs(queryByOrderLiked);
-	const map = querySnap.docs.map((doc) => {
-		//doc.data()[i].likes = doc.data().liked.length;
-		//unlikes: doc.data().unliked.length,
-
-		const map = {
-			publishedAt: doc.data().publishedAt,
-			likes: doc.data().liked.length,
-			liked: doc.data().liked,
-			unlikes: doc.data().unliked.length,
-			unliked: doc.data().unliked,
-			description: doc.data().description,
-			userId: doc.data().userId,
-			videoId: doc.data().videoId,
-			title: doc.data().title,
-			addAt: doc.data().addAt,
-			userPhoto: doc.data().userPhoto,
-			// isLiked: doc.data().liked.includes(user.uid),
-			// isUnliked: doc.data().liked.includes(user.uid),
-		};
-
-		return map;
-	});
+	const data = querySnap.docs.map((doc) => doc.data());
 	// const response = await youtube.get('/videos', {
 	//Aqui eu consigo pegar os parametros de um videp
 	// 	params: { order: 'rating' },
@@ -108,7 +87,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 	return {
 		props: {
-			data: JSON.parse(JSON.stringify(map)),
+			data: JSON.parse(JSON.stringify(data)),
 		},
 	};
 };
