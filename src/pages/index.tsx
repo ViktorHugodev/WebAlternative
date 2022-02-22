@@ -1,21 +1,11 @@
 import { Grid } from '@chakra-ui/react';
-import { orderByChild } from 'firebase/database';
-import {
-	collection,
-	doc,
-	getDoc,
-	getDocs,
-	orderBy,
-	query,
-} from 'firebase/firestore/lite';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore/lite';
 import { GetServerSideProps } from 'next';
-import { useEffect } from 'react';
 import Layout from '../components/Layout';
 import { VideoItem } from '../components/Video/VideoItem';
-import { db, getVideos } from '../firebase/initFirebase';
-
-import api from '../services/youtube';
+import { db } from '../firebase/initFirebase';
 import { useProps } from '../hooks/PropsContext';
+
 interface VideoProps {
 	publishedAt: string;
 	description: string;
@@ -40,15 +30,14 @@ export default function Home({ data }: DataProps) {
 	return (
 		<Layout title="WebAlternative">
 			<Grid
-				mx="0 auto"
 				templateColumns={{
 					sm: '1fr 1fr',
 					md: '1fr 1fr ',
 					lg: 'repeat(3, 1fr)',
 					xl: 'repeat(4, 1fr)',
 				}}
-				gap={4}
-				p="4"
+				gap={6}
+				p="6"
 			>
 				{data.map((item: any, index: number) => {
 					return <VideoItem key={item.id} item={{ item }} />;

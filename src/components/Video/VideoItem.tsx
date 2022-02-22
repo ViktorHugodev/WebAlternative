@@ -174,7 +174,7 @@ export function VideoItem({ item }: any) {
 	}
 
 	return (
-		<GridItem w="360px" boxShadow="2xl" borderRadius="sm">
+		<GridItem maxW="360px" boxShadow="2xl" borderRadius="sm">
 			<Link href={`/${item.item.videoId}`} passHref>
 				<a>
 					<Box>

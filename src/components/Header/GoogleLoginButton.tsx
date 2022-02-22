@@ -5,20 +5,20 @@ interface SignInProps {
 }
 export default function GoogleButton({ signIn }: SignInProps) {
 	return (
-		<Center p={8}>
+		<Center p={[4, 4, 8]}>
 			<Button
 				transition="all .3s"
 				_hover={{
 					filter: 'brightness(.6)',
 				}}
-				w={'full'}
+				w={['10rem', '12rem']}
 				maxW={'md'}
 				variant={'outline'}
 				onClick={signIn}
 				leftIcon={<FcGoogle />}
 			>
 				<Center>
-					<Text>Entrar com Google</Text>
+					<Text fontSize={['12px', '16px', '18px']}>Entrar com Google</Text>
 				</Center>
 			</Button>
 		</Center>
