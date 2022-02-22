@@ -143,7 +143,7 @@ export function VideoItem({ item }: any) {
 					if (refUnliked.includes(user.uid)) {
 						await updateDoc(doc(db, 'videos', item.item.videoId), {
 							unliked: arrayRemove(user.uid),
-							//unlikes: increment(-1),
+							unlikes: increment(-1),
 						});
 						setUnliked(false);
 						setUnlikeCount(unlikeCount - 1);
@@ -151,7 +151,7 @@ export function VideoItem({ item }: any) {
 					} else {
 						await updateDoc(doc(db, 'videos', item.item.videoId), {
 							unliked: arrayUnion(user.uid),
-							//unlikes: increment(1),
+							unlikes: increment(1),
 						});
 						setUnliked(true);
 						setUnlikeCount(unlikeCount + 1);
@@ -159,7 +159,7 @@ export function VideoItem({ item }: any) {
 						if (refLiked.includes(user.uid)) {
 							await updateDoc(doc(db, 'videos', item.item.videoId), {
 								liked: arrayRemove(user.uid),
-								//likes: increment(-1),
+								likes: increment(-1),
 							});
 							setLikeCount(likeCount - 1);
 							setLiked(false);
