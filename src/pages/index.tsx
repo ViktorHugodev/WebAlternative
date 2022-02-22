@@ -1,4 +1,5 @@
 import { Grid } from '@chakra-ui/react';
+import { orderByChild } from 'firebase/database';
 import {
 	collection,
 	doc,
@@ -12,11 +13,30 @@ import { useEffect } from 'react';
 import Layout from '../components/Layout';
 import { VideoItem } from '../components/Video/VideoItem';
 import { db, getVideos } from '../firebase/initFirebase';
-import { useProps } from '../hooks/PropsContext';
+
 import api from '../services/youtube';
-export default function Home({ data }: any) {
+import { useProps } from '../hooks/PropsContext';
+interface VideoProps {
+	publishedAt: string;
+	description: string;
+	liked: string[];
+	unliked: string[];
+	userId: string;
+	likes: number;
+	unLikes: number;
+	videoId: string;
+	title: string;
+	addAt: string;
+}
+interface DataProps {
+	data: VideoProps[];
+}
+export default function Home({ data }: DataProps) {
 	const { user } = useProps();
 	console.log(data);
+	// const map = data.map((doc) => {
+	// 	console.log(doc);
+	// });
 	return (
 		<Layout title="WebAlternative">
 			<Grid
@@ -38,13 +58,37 @@ export default function Home({ data }: any) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const response = await getVideos(db);
+	// const response = await getVideos(db);
 
 	// const docRef = doc(db, 'videos');
 	const videosCol = collection(db, 'videos');
+
+	//const queryConstraints = [orderByChild('liked')];
+
 	const queryByOrderLiked = query(videosCol, orderBy('liked', 'desc'));
 	const querySnap = await getDocs(queryByOrderLiked);
-	const data = querySnap.docs.map((doc) => doc.data());
+	const map = querySnap.docs.map((doc) => {
+		//doc.data()[i].likes = doc.data().liked.length;
+		//unlikes: doc.data().unliked.length,
+
+		const map = {
+			publishedAt: doc.data().publishedAt,
+			likes: doc.data().liked.length,
+			liked: doc.data().liked,
+			unlikes: doc.data().unliked.length,
+			unliked: doc.data().unliked,
+			description: doc.data().description,
+			userId: doc.data().userId,
+			videoId: doc.data().videoId,
+			title: doc.data().title,
+			addAt: doc.data().addAt,
+			userPhoto: doc.data().userPhoto,
+			// isLiked: doc.data().liked.includes(user.uid),
+			// isUnliked: doc.data().liked.includes(user.uid),
+		};
+
+		return map;
+	});
 	// const response = await youtube.get('/videos', {
 	//Aqui eu consigo pegar os parametros de um videp
 	// 	params: { order: 'rating' },
@@ -52,10 +96,19 @@ export const getServerSideProps: GetServerSideProps = async () => {
 	// const data = await response.data.items;
 
 	// console.log('[getServerSideProps]: ', data);
+	// console.log(data);
+	// const returnData = data.forEach((i, index) => {
+	// 	console.log(i[index].likes);
+	// 	//i[index].likes = 0;
+	// });
+	// const temp = {
+	// 	title:
+	// }
+	// console.log(returnData);
 
 	return {
 		props: {
-			data: JSON.parse(JSON.stringify(data)),
+			data: JSON.parse(JSON.stringify(map)),
 		},
 	};
 };
