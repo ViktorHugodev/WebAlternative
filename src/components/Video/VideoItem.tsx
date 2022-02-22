@@ -7,6 +7,7 @@ import {
 	Box,
 	Avatar,
 	Spinner,
+	Button,
 } from '@chakra-ui/react';
 import { VideoCard } from './VideoComponent';
 import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
@@ -62,24 +63,11 @@ export function VideoItem({ item }: any) {
 	const [unlikeCount, setUnlikeCount] = useState(item.item.unlikes);
 	const [likedUser, setUserLiked] = useState([item.item.liked]);
 	const [isLiked, setLiked] = useState(false);
+	const [isUnliked, setUnliked] = useState(false);
 	useEffect(() => {
 		isLikedCheck();
+		isUnlikedCheck();
 	}, [user]);
-
-	async function checkLiked() {
-		if (user) {
-			const docRef = doc(db, 'videos', item.item.videoId);
-
-			const docGet = await getDoc(docRef);
-			if (docGet.exists()) {
-				const refLikes = docGet.data().liked;
-				console.log(refLikes);
-				if (refLikes.includes(user.id)) {
-					setLiked(true);
-				}
-			}
-		}
-	}
 
 	async function isLikedCheck() {
 		if (user) {
@@ -89,8 +77,14 @@ export function VideoItem({ item }: any) {
 				if (docGet.data().liked.includes(user.uid)) return setLiked(true);
 		}
 	}
-
-	//{likedUser.includes(user.uid)}
+	async function isUnlikedCheck() {
+		if (user) {
+			const docRef = doc(db, 'videos', item.item.videoId);
+			const docGet = await getDoc(docRef);
+			if (docGet.exists())
+				if (docGet.data().unliked.includes(user.uid)) return setUnliked(true);
+		}
+	}
 
 	async function like() {
 		if (user) {
@@ -126,7 +120,7 @@ export function VideoItem({ item }: any) {
 								});
 								console.log('Removeu unlike');
 								setUnlikeCount(unlikeCount - 1);
-								setIsUnLike(false);
+								setUnliked(false);
 							}
 						}
 					}
@@ -138,7 +132,7 @@ export function VideoItem({ item }: any) {
 	async function unlike() {
 		if (user) {
 			setLoading(true);
-			setLiked(false);
+			// setLiked(false);
 			const docRef = doc(db, 'videos', item.item.videoId);
 			const docGet = await getDoc(docRef);
 
@@ -151,6 +145,7 @@ export function VideoItem({ item }: any) {
 							unliked: arrayRemove(user.uid),
 							//unlikes: increment(-1),
 						});
+						setUnliked(false);
 						setUnlikeCount(unlikeCount - 1);
 						console.log('Removeu unlike');
 					} else {
@@ -158,6 +153,7 @@ export function VideoItem({ item }: any) {
 							unliked: arrayUnion(user.uid),
 							//unlikes: increment(1),
 						});
+						setUnliked(true);
 						setUnlikeCount(unlikeCount + 1);
 						console.log('Adicionou unlike');
 						if (refLiked.includes(user.uid)) {
@@ -166,6 +162,7 @@ export function VideoItem({ item }: any) {
 								//likes: increment(-1),
 							});
 							setLikeCount(likeCount - 1);
+							setLiked(false);
 							console.log('removeu like');
 						}
 					}
@@ -192,21 +189,26 @@ export function VideoItem({ item }: any) {
 			</Link>
 			<Flex>
 				<Flex align="center">
-					<IconButton
+					<Button
+						mr="2"
 						zIndex="2"
 						onClick={() => {
 							like();
 							// checkLiked();
-							isLikedCheck();
+							isUnlikedCheck();
 						}}
 						isActive={isLiked}
 						isLoading={loading}
 						transition="all .3s"
 						isDisabled={user ? false : true}
+						color="gray.400"
 						bg="none"
+						height="32px"
+						width="32px"
 						_active={{
-							bg: 'green',
-							color: 'red',
+							transform: 'scale(1.1)',
+							color: 'gray.50',
+							border: '1px',
 						}}
 						_hover={{
 							bg: 'none',
@@ -214,46 +216,44 @@ export function VideoItem({ item }: any) {
 							transform: 'scale(1.2)',
 						}}
 						aria-label="like"
-						icon={<AiOutlineLike />}
-					/>
-
-					{/* <IconButton
+						leftIcon={<AiOutlineLike />}
+					>
+						<Text fontSize="12px" color="gray.200">
+							{likeCount}
+						</Text>
+					</Button>
+					<Button
 						zIndex="2"
-						onClick={like}
+						onClick={() => {
+							unlike();
+							// checkLiked();
+							isLikedCheck();
+						}}
+						isActive={isUnliked}
 						isLoading={loading}
 						transition="all .3s"
 						isDisabled={user ? false : true}
+						color="gray.400"
 						bg="none"
+						height="32px"
+						width="32px"
+						_active={{
+							transform: 'scale(1.1)',
+							color: 'gray.50',
+							border: '1px',
+						}}
 						_hover={{
 							bg: 'none',
 							filter: 'brightness(.8)',
 							transform: 'scale(1.2)',
 						}}
 						aria-label="like"
-						icon={<AiOutlineLike />}
-					/> */}
-					<Text fontSize="12px" color="gray.200">
-						{/* {likeCount === item.item.likes ? item.item.likes : likeCount} */}
-						{likeCount}
-					</Text>
-					<IconButton
-						onClick={unlike}
-						isDisabled={user ? false : true}
-						transition="all .3s"
-						isLoading={loading}
-						_hover={{
-							bg: 'none',
-							filter: 'brightness(.8)',
-							transform: 'scale(1.2)',
-						}}
-						bg="none"
-						variant="ghost"
-						aria-label="deslike"
-						icon={<AiOutlineDislike />}
-					/>
-					<Text fontSize="12px" color="gray.200">
-						{unlikeCount}
-					</Text>
+						leftIcon={<AiOutlineDislike />}
+					>
+						<Text fontSize="12px" color="gray.200">
+							{unlikeCount}
+						</Text>
+					</Button>
 				</Flex>
 				<Flex align="center" justify="flex-end" flex="1">
 					<Text fontSize="14px">{item.item?.displayName}</Text>
