@@ -1,20 +1,9 @@
-import { Flex, Input, Icon, Button, IconButton } from '@chakra-ui/react';
-import { BiVideoPlus } from 'react-icons/bi';
-import { putVideos, db } from '../../firebase/initFirebase';
-
+import { Flex, IconButton } from '@chakra-ui/react';
 import { useState } from 'react';
-import { useProps } from '../../hooks/PropsContext';
-// interface UserProps {
-// 	uid: string;
-// 	email: string;
-// 	name: string;
-// 	token: string;
-// 	provider: any;
-// 	providerURL: string;
-// }
-// interface User {
-// 	user: UserProps[];
-// }
+import { BiVideoPlus } from 'react-icons/bi';
+import { useProps } from '../../context/PropsContext';
+import { db, putVideos } from '../../firebase/initFirebase';
+
 export function UploadButton() {
 	const { user } = useProps();
 
@@ -22,12 +11,6 @@ export function UploadButton() {
 	return (
 		<>
 			<Flex>
-				{/* <Input
-					bg="gray.600"
-					value={link}
-					onChange={(e) => setLink(e.target.value)}
-				/> */}
-
 				<Flex align="center" ml="auto">
 					<IconButton
 						onClick={() => putVideos(db, link, user)}

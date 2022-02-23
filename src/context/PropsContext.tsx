@@ -15,36 +15,30 @@ import {
 import router from 'next/router';
 interface UserProps {
 	uid: string;
-	email: string;
+	likes: string[];
+	unlikes: string[];
 	displayName: string;
-	likes?: number[];
+	email: string;
+	photoURL: string;
+	fullname: string;
 }
+
 interface User {
 	user: UserProps[];
 }
+
 const PropsContext = createContext({});
 
 export function PropsProvider({ children }: any) {
-	const [isLike, setIsLike] = useState<boolean>(false);
 	const [user, setUser] = useState<any>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const auth = getAuth();
 	const provider = new GoogleAuthProvider();
 
-	// const setSession = (session: any) => {
-	// 	if (session) {
-	// 		cookie.set('auth', session, {
-	// 			expires: 1,
-	// 		});
-	// 	} else {
-	// 		cookie.remove('auth');
-	// 	}
-	// };
-
 	function signIn() {
 		setLoading(true);
 		signInWithPopup(auth, provider)
-			.then((result) => {
+			.then((result: any) => {
 				// This gives you a Google Access Token. You can use it to access the Google API.
 				const credential = GoogleAuthProvider.credentialFromResult(result);
 				// const token = credential.accessToken;

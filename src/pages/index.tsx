@@ -3,30 +3,30 @@ import { collection, getDocs, orderBy, query } from 'firebase/firestore/lite';
 import { GetServerSideProps } from 'next';
 import Layout from '../components/Layout';
 import { VideoItem } from '../components/Video/VideoItem';
+import { useProps } from '../context/PropsContext';
 import { db } from '../firebase/initFirebase';
-import { useProps } from '../hooks/PropsContext';
 
 interface VideoProps {
-	publishedAt: string;
+	addAt: string;
 	description: string;
+	displayName: string;
+	fullName: string;
+	publishedAt: string;
+	title: string;
+	userId: string;
+	userPhoto: string;
+	likes: number;
+	unlikes: number;
+	videoId: string;
 	liked: string[];
 	unliked: string[];
-	userId: string;
-	likes: number;
-	unLikes: number;
-	videoId: string;
-	title: string;
-	addAt: string;
 }
 interface DataProps {
 	data: VideoProps[];
 }
 export default function Home({ data }: DataProps) {
 	const { user } = useProps();
-	console.log(data);
-	// const map = data.map((doc) => {
-	// 	console.log(doc);
-	// });
+
 	return (
 		<Layout title="WebAlternative">
 			<Grid
@@ -39,8 +39,8 @@ export default function Home({ data }: DataProps) {
 				gap={6}
 				p="6"
 			>
-				{data.map((item: any, index: number) => {
-					return <VideoItem key={item.id} item={{ item }} />;
+				{data.map((item: VideoProps) => {
+					return <VideoItem key={item.videoId} item={{ item }} />;
 				})}
 			</Grid>
 		</Layout>
@@ -48,32 +48,10 @@ export default function Home({ data }: DataProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	// const response = await getVideos(db);
-
-	// const docRef = doc(db, 'videos');
 	const videosCol = collection(db, 'videos');
-
-	//const queryConstraints = [orderByChild('liked')];
-
 	const queryByOrderLiked = query(videosCol, orderBy('likes', 'desc'));
 	const querySnap = await getDocs(queryByOrderLiked);
 	const data = querySnap.docs.map((doc) => doc.data());
-	// const response = await youtube.get('/videos', {
-	//Aqui eu consigo pegar os parametros de um videp
-	// 	params: { order: 'rating' },
-	// });
-	// const data = await response.data.items;
-
-	// console.log('[getServerSideProps]: ', data);
-	// console.log(data);
-	// const returnData = data.forEach((i, index) => {
-	// 	console.log(i[index].likes);
-	// 	//i[index].likes = 0;
-	// });
-	// const temp = {
-	// 	title:
-	// }
-	// console.log(returnData);
 
 	return {
 		props: {

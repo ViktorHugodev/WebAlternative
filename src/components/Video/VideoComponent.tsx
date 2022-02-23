@@ -5,17 +5,20 @@ interface VideoProps {
 			addAt: string;
 			description: string;
 			displayName: string;
+			fullName: string;
 			publishedAt: string;
 			title: string;
 			userId: string;
 			userPhoto: string;
-			videoId: string;
 			likes: number;
 			unlikes: number;
+			videoId: string;
+			liked: string[];
+			unliked: string[];
 		};
 	};
 }
-export function VideoCard({ item }: any) {
+export function VideoCard({ item }: VideoProps) {
 	return (
 		<Box>
 			<AspectRatio maxW="480px" ratio={16 / 9}>
@@ -28,5 +31,3 @@ export function VideoCard({ item }: any) {
 		</Box>
 	);
 }
-
-// display={{'-webkit-box', '-webkit-line-clamp': 2, '-web-kit-box-orient': 'vertical', overflow: 'hidden'}}

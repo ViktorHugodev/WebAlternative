@@ -1,39 +1,19 @@
-import Link from 'next/link';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { Avatar, Box, Button, Flex, GridItem, Text } from '@chakra-ui/react';
 import {
-	GridItem,
-	Text,
-	Flex,
-	IconButton,
-	Box,
-	Avatar,
-	Spinner,
-	Button,
-} from '@chakra-ui/react';
-import { VideoCard } from './VideoComponent';
-import { AiOutlineLike, AiOutlineDislike } from 'react-icons/ai';
-import { useEffect, useState } from 'react';
-import {
-	updateDoc,
-	increment,
+	arrayRemove,
+	arrayUnion,
 	doc,
 	getDoc,
-	setDoc,
-	addDoc,
-	deleteDoc,
-	arrayUnion,
-	collection,
-	getDocs,
-	collectionGroup,
-	where,
-	deleteField,
-	arrayRemove,
-	FieldValue,
-	orderBy,
-	query,
+	increment,
+	updateDoc,
 } from 'firebase/firestore/lite';
-import app, { db } from '../../firebase/initFirebase';
-import { useProps } from '../../hooks/PropsContext';
-// import { collection, getDocs } from 'firebase/firestore/lite';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
+import { useProps } from '../../context/PropsContext';
+import { db } from '../../firebase/initFirebase';
+import { VideoCard } from './VideoComponent';
 
 interface VideoProps {
 	item: {
@@ -41,29 +21,28 @@ interface VideoProps {
 			addAt: string;
 			description: string;
 			displayName: string;
+			fullName: string;
 			publishedAt: string;
 			title: string;
 			userId: string;
 			userPhoto: string;
-			videoId: string;
 			likes: number;
-			liked: string[];
 			unlikes: number;
+			videoId: string;
+			liked: string[];
 			unliked: string[];
 		};
 	};
 }
-export function VideoItem({ item }: any) {
+export function VideoItem({ item }: VideoProps) {
 	const { user } = useProps();
 
 	const [loading, setLoading] = useState(false);
-	const [isUnlike, setIsUnLike] = useState(false);
-	const [historyLikes, setHistoryLikes] = useState<any>([]);
 	const [likeCount, setLikeCount] = useState(item.item.likes);
 	const [unlikeCount, setUnlikeCount] = useState(item.item.unlikes);
-	const [likedUser, setUserLiked] = useState([item.item.liked]);
 	const [isLiked, setLiked] = useState(false);
 	const [isUnliked, setUnliked] = useState(false);
+
 	useEffect(() => {
 		isLikedCheck();
 		isUnlikedCheck();
@@ -132,7 +111,7 @@ export function VideoItem({ item }: any) {
 	async function unlike() {
 		if (user) {
 			setLoading(true);
-			// setLiked(false);
+
 			const docRef = doc(db, 'videos', item.item.videoId);
 			const docGet = await getDoc(docRef);
 
@@ -191,7 +170,6 @@ export function VideoItem({ item }: any) {
 				<Flex align="center">
 					<Button
 						mr="2"
-						zIndex="2"
 						onClick={() => {
 							like();
 							// checkLiked();
@@ -255,6 +233,9 @@ export function VideoItem({ item }: any) {
 						</Text>
 					</Button>
 				</Flex>
+				<Link href={`/${item.item.videoId}`}>
+					<a></a>
+				</Link>
 				<Flex align="center" justify="flex-end" flex="1">
 					<Text fontSize="14px">{item.item?.displayName}</Text>
 					<Avatar

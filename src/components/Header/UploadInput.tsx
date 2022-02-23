@@ -17,10 +17,7 @@ import {
 import { useState } from 'react';
 import { BiVideoPlus } from 'react-icons/bi';
 import { db, putVideos } from '../../firebase/initFirebase';
-import { useProps } from '../../hooks/PropsContext';
-interface UploadProps {
-	isMobile: any;
-}
+import { useProps } from '../../context/PropsContext';
 
 export function UploadInput() {
 	const OverlayOne = () => (

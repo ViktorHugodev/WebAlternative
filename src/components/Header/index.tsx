@@ -1,5 +1,5 @@
 import { Flex, useBreakpointValue } from '@chakra-ui/react';
-import { useProps } from '../../hooks/PropsContext';
+import { useProps } from '../../context/PropsContext';
 import GoogleButton from './GoogleLoginButton';
 import { Logo } from './Logo';
 import { Profile } from './Profile';

@@ -1,12 +1,4 @@
-import {
-	Box,
-	Center,
-	Heading,
-	Text,
-	Stack,
-	Avatar,
-	useColorModeValue,
-} from '@chakra-ui/react';
+import { Avatar, Box, Stack, Text } from '@chakra-ui/react';
 
 interface VideoProps {
 	addAt: string;
@@ -34,7 +26,7 @@ export default function ProfileVideoCard({ data }: DataProps) {
 				bg="black.dark"
 				boxShadow={'2xl'}
 				rounded={'md'}
-				p={6}
+				p={[2, 4, 6]}
 			>
 				<Stack mt={6} direction={'row'} spacing={4} align={'center'}>
 					<Avatar src={data.userPhoto} />

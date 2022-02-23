@@ -1,4 +1,4 @@
-import { PropsProvider } from '../hooks/PropsContext';
+import { PropsProvider } from '../context/PropsContext';
 import { ChakraProvider } from '@chakra-ui/react';
 
 import { theme } from '../styles/theme';

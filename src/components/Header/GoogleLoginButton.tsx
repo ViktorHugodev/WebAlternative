@@ -11,7 +11,7 @@ export default function GoogleButton({ signIn }: SignInProps) {
 				_hover={{
 					filter: 'brightness(.6)',
 				}}
-				w={['10rem', '12rem']}
+				w={['10rem', '14rem']}
 				maxW={'md'}
 				variant={'outline'}
 				onClick={signIn}
