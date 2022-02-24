@@ -1,5 +1,6 @@
 import { Box, Flex, IconButton, Stack, Text } from '@chakra-ui/react';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
+import { ReactionsButtons } from '../Reactions/ReactionButtons';
 
 interface VideoProps {
 	addAt: string;
@@ -10,6 +11,8 @@ interface VideoProps {
 	title: string;
 	userId: string;
 	userPhoto: string;
+	likes: number;
+	unlikes: number;
 	videoId: string;
 	liked: string[];
 	unliked: string[];
@@ -35,37 +38,7 @@ export default function InfoViewCard({ data }: DataProps) {
 							200
 						)}...`}</Text>
 					</Box>
-					<Flex align="center">
-						<IconButton
-							transition="all .3s"
-							bg="none"
-							_hover={{
-								bg: 'none',
-								filter: 'brightness(.8)',
-								transform: 'scale(1.2)',
-							}}
-							aria-label="like"
-							icon={<AiOutlineLike />}
-						/>
-						<Text fontSize="12px" color="gray.200">
-							{data.liked.length}
-						</Text>
-						<IconButton
-							// onClick={unlike}
-							transition="all .3s"
-							_hover={{
-								bg: 'none',
-								filter: 'brightness(.8)',
-								transform: 'scale(1.2)',
-							}}
-							bg="none"
-							aria-label="deslike"
-							icon={<AiOutlineDislike />}
-						/>
-						<Text fontSize="12px" color="gray.200">
-							{data.unliked.length}
-						</Text>
-					</Flex>
+					<ReactionsButtons reactions={data} />
 					<Text color="text">Adicionado por: {data.fullName}</Text>
 					<Text color="text" mt="4">
 						{new Date(data.addAt).toLocaleDateString('pt-BR', {
