@@ -13,11 +13,13 @@ interface VideoProps {
 	addAt: string;
 	description: string;
 	displayName: string;
+	fullName: string;
 	publishedAt: string;
 	title: string;
-	fullName: string;
 	userId: string;
 	userPhoto: string;
+	likes: number;
+	unlikes: number;
 	videoId: string;
 	liked: string[];
 	unliked: string[];
