@@ -4,21 +4,39 @@
 
 ![web-portal-home](https://user-images.githubusercontent.com/85125378/155538607-226bde07-aab7-4e44-a5cb-35c84bf91458.png)
 
+&nbsp;
+
+## 📚 Informações sobre o projeto
+
+- Esse projeto foi desenvolvido como teste técnico para uma vaga Frontend JR
+
+  - Páginas usando SSR do Next para aprimorar o SEO
+
+  - Qualquer pessoa pode visualizar os vídeos, mas apenas usuários logados podem adicionar vídeos e reagir aos vídeos.
+
+  - Foi usado o Firestore para salvamento dos dados de vídeos e de usuários.
+
+  - Foi usado Chakra Ui na criação da interface
+
+  - Projeto no ar: [Link](https://webalternative.vercel.app/)
 
 &nbsp;
 
 ## 🛠️ Tecnologias/Ferramentas ultilizadas
 
-* [React](https://pt-br.reactjs.org/E)
-* [Next.js](https://nextjs.org/)
-* [ChakraUI](https://chakra-ui.com/)
-* [Typescript](https://www.typescriptlang.org/docs/)
-* [Firebase Auth](https://firebase.google.com/docs/auth)
-* [Firestore](https://firebase.google.com/docs/storage)
+- [React](https://pt-br.reactjs.org/E)
+- [Next.js](https://nextjs.org/)
+- [ChakraUI](https://chakra-ui.com/)
+- [Typescript](https://www.typescriptlang.org/docs/)
+- [Firebase Auth](https://firebase.google.com/docs/auth)
+- [Firestore](https://firebase.google.com/docs/storage)
 
 ## 📝 Licença
+
 - Este projeto está licenciado sob a Licença MIT. Veja o arquivo de LICENÇA para detalhes.
+
 ## ⚙️ Instalação
+
 ```
 # Abra um terminal e copie este repositório com o comando
 $ git clone https://github.com/ViktorHugodev/WebAlternative
@@ -31,7 +49,7 @@ $ cd web-video
 # Instale as dependências
 $ yarn
 
-# Crie um .env.local 
+# Crie um .env.local
 - conect com Firebase auth e firebase store
 	apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY,
 	authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -45,7 +63,7 @@ $ yarn
 $ yarn dev
 
 ```
+
 ## Authors
 
 - [@ViktorHugodev](https://github.com/ViktorHugodev)
-

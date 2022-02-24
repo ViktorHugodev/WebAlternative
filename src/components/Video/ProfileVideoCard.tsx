@@ -20,8 +20,6 @@ export default function ProfileVideoCard({ data }: DataProps) {
 	return (
 		<Box overflow="hidden">
 			<Box
-				// maxW={'445px'}
-
 				w={'full'}
 				bg="black.dark"
 				boxShadow={'2xl'}
