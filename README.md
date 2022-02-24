@@ -8,7 +8,7 @@
 
 ## 📚 Informações sobre o projeto
 
-- Esse projeto foi desenvolvido como teste técnico para uma vaga Frontend JR
+- Um portal Web com vídeos listados no YouTube.
 
   - Páginas usando SSR do Next para aprimorar o SEO
 
