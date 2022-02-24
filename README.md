@@ -16,7 +16,7 @@
 
   - Foi usado o Firestore para salvamento dos dados de vídeos e de usuários.
 
-  - Foi usado Chakra Ui na criação da interface
+  - Foi usado Chakra Ui na criação da interface.
 
   - Projeto no ar: [Link](https://webalternative.vercel.app/)
 
