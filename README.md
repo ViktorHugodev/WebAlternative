@@ -1,34 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Web Portal
 
-## Getting Started
+[WebAlternative](https://webalternative.vercel.app/)
 
-First, run the development server:
+![web-portal-home](https://user-images.githubusercontent.com/85125378/155538607-226bde07-aab7-4e44-a5cb-35c84bf91458.png)
 
-```bash
-npm run dev
-# or
-yarn dev
+
+&nbsp;
+
+## 🛠️ Tecnologias/Ferramentas ultilizadas
+
+* [React](https://pt-br.reactjs.org/E)
+* [Next.js](https://nextjs.org/)
+* [ChakraUI](https://chakra-ui.com/)
+* [Typescript](https://www.typescriptlang.org/docs/)
+* [Firebase Auth](https://firebase.google.com/docs/auth)
+* [Firestore](https://firebase.google.com/docs/storage)
+
+## 📝 Licença
+- Este projeto está licenciado sob a Licença MIT. Veja o arquivo de LICENÇA para detalhes.
+## ⚙️ Instalação
+```
+# Abra um terminal e copie este repositório com o comando
+$ git clone https://github.com/ViktorHugodev/WebAlternative
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+# Acesse a pasta da aplicação
+$ cd web-video
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+# Instale as dependências
+$ yarn
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+# Crie um .env.local 
+- conect com Firebase auth e firebase store
+	apiKey: process.env.NEXT_PUBLIC_FIREBASE_APIKEY,
+	authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+	databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+	projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+	storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGEBUCKET,
+	messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING,
+	appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+# Rode a aplicação
+$ yarn dev
 
-## Learn More
+```
+## Authors
 
-To learn more about Next.js, take a look at the following resources:
+- [@ViktorHugodev](https://github.com/ViktorHugodev)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
