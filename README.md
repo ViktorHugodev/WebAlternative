@@ -6,6 +6,22 @@
 
 &nbsp;
 
+## 📚 Informações sobre o projeto
+
+- Esse projeto foi desenvolvido como teste técnico para uma vaga Frontend JR
+
+  - Páginas usando SSR do Next para aprimorar o SEO
+
+  - Qualquer pessoa pode visualizar os vídeos, mas apenas usuários logados podem adicionar vídeos e reagir aos vídeos.
+
+  - Foi usado o Firestore para salvamento dos dados de vídeos e de usuários.
+
+  - Foi usado Chakra Ui na criação da interface
+
+  - Projeto no ar: [Link](https://webalternative.vercel.app/)
+
+&nbsp;
+
 ## 🛠️ Tecnologias/Ferramentas ultilizadas
 
 - [React](https://pt-br.reactjs.org/E)
