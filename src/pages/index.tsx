@@ -3,30 +3,11 @@ import { collection, getDocs, orderBy, query } from 'firebase/firestore/lite';
 import { GetServerSideProps } from 'next';
 import Layout from '../components/Layout';
 import { VideoItem } from '../components/Video/VideoItem';
-import { useProps } from '../context/PropsContext';
+import { DataProps, VideoProps } from '../context/types';
+import { getVideosFromDb } from '../firebase/getVideosFromDb';
 import { db } from '../firebase/initFirebase';
 
-interface VideoProps {
-	addAt: string;
-	description: string;
-	displayName: string;
-	fullName: string;
-	publishedAt: string;
-	title: string;
-	userId: string;
-	userPhoto: string;
-	likes: number;
-	unlikes: number;
-	videoId: string;
-	liked: string[];
-	unliked: string[];
-}
-interface DataProps {
-	data: VideoProps[];
-}
 export default function Home({ data }: DataProps) {
-	const { user } = useProps();
-
 	return (
 		<Layout title="WebAlternative">
 			<Grid
@@ -39,8 +20,8 @@ export default function Home({ data }: DataProps) {
 				gap={6}
 				p="6"
 			>
-				{data.map((item: VideoProps) => {
-					return <VideoItem key={item.videoId} item={{ item }} />;
+				{data.map((video: VideoProps) => {
+					return <VideoItem key={video.videoId} video={video} />;
 				})}
 			</Grid>
 		</Layout>
@@ -48,11 +29,7 @@ export default function Home({ data }: DataProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	const videosCol = collection(db, 'videos');
-	const queryByOrderLiked = query(videosCol, orderBy('likes', 'desc'));
-	const querySnap = await getDocs(queryByOrderLiked);
-	const data = querySnap.docs.map((doc) => doc.data());
-
+	const data = await getVideosFromDb()
 	return {
 		props: {
 			data: JSON.parse(JSON.stringify(data)),

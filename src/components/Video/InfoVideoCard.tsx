@@ -1,26 +1,8 @@
-import { Box, Flex, IconButton, Stack, Text } from '@chakra-ui/react';
-import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
+import { Box, Stack, Text } from '@chakra-ui/react';
+import { VideosPropsArray } from '../../context/types';
 import { ReactionsButtons } from '../Reactions/ReactionButtons';
 
-interface VideoProps {
-	addAt: string;
-	description: string;
-	displayName: string;
-	fullName: string;
-	publishedAt: string;
-	title: string;
-	userId: string;
-	userPhoto: string;
-	likes: number;
-	unlikes: number;
-	videoId: string;
-	liked: string[];
-	unliked: string[];
-}
-interface DataProps {
-	data: VideoProps;
-}
-export default function InfoViewCard({ data }: DataProps) {
+export default function InfoViewCard({ video }: VideosPropsArray) {
 	return (
 		<Box boxShadow={'2xl'}>
 			<Box
@@ -32,16 +14,16 @@ export default function InfoViewCard({ data }: DataProps) {
 			>
 				<Stack direction={'column'} fontSize={'sm'}>
 					<Box my="4">
-						<Text fontWeight={600}>{data.title}</Text>
-						<Text color={'text'}>{`${data.description.substring(
+						<Text fontWeight={600}>{video.title}</Text>
+						<Text color={'text'}>{`${video.description.substring(
 							0,
 							200
 						)}...`}</Text>
 					</Box>
-					<ReactionsButtons reactions={data} />
-					<Text color="text">Adicionado por: {data.fullName}</Text>
+					<ReactionsButtons video={video} />
+					<Text color="text">Adicionado por: {video.fullName}</Text>
 					<Text color="text" mt="4">
-						{new Date(data.addAt).toLocaleDateString('pt-BR', {
+						{new Date(video.addAt).toLocaleDateString('pt-BR', {
 							day: '2-digit',
 							month: 'short',
 							year: 'numeric',

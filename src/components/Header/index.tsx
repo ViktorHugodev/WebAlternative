@@ -1,4 +1,5 @@
 import { Flex, useBreakpointValue } from '@chakra-ui/react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useProps } from '../../context/PropsContext';
 import GoogleButton from './GoogleLoginButton';
 import { Logo } from './Logo';
@@ -8,7 +9,15 @@ import { UploadInput } from './UploadInput';
 
 export function Header() {
 	const { user, signIn, signOutAuth } = useProps();
-
+	const [showChild, setShowChild] = useState(false);
+	useEffect(() => {
+		setShowChild(true);
+	}, [])
+	
+	if(!showChild) {
+		return null
+	}
+	
 	return (
 		<Flex
 			w="100%"
@@ -24,6 +33,7 @@ export function Header() {
 			<Logo />
 
 			<UploadInput />
+
 			{!user ? (
 				<GoogleButton signIn={signIn} />
 			) : (

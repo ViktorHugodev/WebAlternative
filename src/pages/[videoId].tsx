@@ -1,41 +1,21 @@
 /* eslint-disable react/jsx-no-undef */
-import { AspectRatio, Avatar, Box, Flex, Text } from '@chakra-ui/react';
+import { AspectRatio, Box, Flex } from '@chakra-ui/react';
 import { doc, getDoc } from 'firebase/firestore/lite';
-
 import { GetServerSideProps } from 'next';
-
 import Layout from '../components/Layout';
 import InfoViewCard from '../components/Video/InfoVideoCard';
 import ProfileVideoCard from '../components/Video/ProfileVideoCard';
+import { VideosPropsArray } from '../context/types';
 import { db } from '../firebase/initFirebase';
 
-interface VideoProps {
-	addAt: string;
-	description: string;
-	displayName: string;
-	fullName: string;
-	publishedAt: string;
-	title: string;
-	userId: string;
-	userPhoto: string;
-	likes: number;
-	unlikes: number;
-	videoId: string;
-	liked: string[];
-	unliked: string[];
-}
-interface DataProps {
-	data: VideoProps;
-}
-
-export default function VideoPage({ data }: DataProps) {
+export default function VideoPage({ video }: VideosPropsArray) {
 	return (
-		<Layout title={data.title}>
+		<Layout title={video.title}>
 			<Box p={{ sm: '2', lg: '6' }} overflow="hidden">
 				<AspectRatio maxW="full" ratio={16 / 9} boxShadow="dark-lg" flex="1">
 					<iframe
-						title={data.title}
-						src={`https://www.youtube.com/embed/${data.videoId}`}
+						title={video.title}
+						src={`https://www.youtube.com/embed/${video.videoId}`}
 						allowFullScreen
 					></iframe>
 				</AspectRatio>
@@ -44,8 +24,8 @@ export default function VideoPage({ data }: DataProps) {
 					justify="space-between"
 					direction={['column-reverse', 'column-reverse', 'row']}
 				>
-					<InfoViewCard data={data} />
-					<ProfileVideoCard data={data} />
+					<InfoViewCard video={video} />
+					<ProfileVideoCard video={video} />
 				</Flex>
 			</Box>
 		</Layout>
@@ -59,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
 
 	return {
 		props: {
-			data: JSON.parse(JSON.stringify(docGet.data())),
+			video: JSON.parse(JSON.stringify(docGet.data())),
 		},
 	};
 };

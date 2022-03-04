@@ -12,29 +12,12 @@ import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 import { db } from '../../firebase/initFirebase';
 import { useProps } from '../../context/PropsContext';
 import { useEffect, useState } from 'react';
+import { VideosPropsArray } from '../../context/types';
 
-interface VideosProps {
-	addAt: string;
-	description: string;
-	displayName: string;
-	fullName: string;
-	publishedAt: string;
-	title: string;
-	userId: string;
-	userPhoto: string;
-	likes: number;
-	unlikes: number;
-	videoId: string;
-	liked: string[];
-	unliked: string[];
-}
-interface ReactionProps {
-	reactions: VideosProps;
-}
-export function ReactionsButtons({ reactions }: ReactionProps) {
+export function ReactionsButtons({ video }: VideosPropsArray) {
 	const [loading, setLoading] = useState(false);
-	const [likeCount, setLikeCount] = useState(reactions.likes);
-	const [unlikeCount, setUnlikeCount] = useState(reactions.unlikes);
+	const [likeCount, setLikeCount] = useState(video.likes);
+	const [unlikeCount, setUnlikeCount] = useState(video.unlikes);
 	const [isLiked, setLiked] = useState(false);
 	const [isUnliked, setUnliked] = useState(false);
 	const { user } = useProps();
@@ -46,7 +29,7 @@ export function ReactionsButtons({ reactions }: ReactionProps) {
 
 	async function isLikedCheck() {
 		if (user) {
-			const docRef = doc(db, 'videos', reactions.videoId);
+			const docRef = doc(db, 'videos', video.videoId);
 			const docGet = await getDoc(docRef);
 			if (docGet.exists())
 				if (docGet.data().liked.includes(user.uid)) return setLiked(true);
@@ -54,17 +37,17 @@ export function ReactionsButtons({ reactions }: ReactionProps) {
 	}
 	async function isUnlikedCheck() {
 		if (user) {
-			const docRef = doc(db, 'videos', reactions.videoId);
+			const docRef = doc(db, 'videos', video.videoId);
 			const docGet = await getDoc(docRef);
 			if (docGet.exists())
 				if (docGet.data().unliked.includes(user.uid)) return setUnliked(true);
 		}
 	}
 
-	async function like() {
+	async function handleLikeVideo() {
 		if (user) {
 			setLoading(true);
-			const docRef = doc(db, 'videos', reactions.videoId);
+			const docRef = doc(db, 'videos', video.videoId);
 			const docGet = await getDoc(docRef);
 			if (docGet.exists()) {
 				const refLiked = docGet.data().liked;
@@ -72,21 +55,21 @@ export function ReactionsButtons({ reactions }: ReactionProps) {
 				if (refLiked)
 					if (refLiked) {
 						if (refLiked.includes(user.uid)) {
-							await updateDoc(doc(db, 'videos', reactions.videoId), {
+							await updateDoc(doc(db, 'videos', video.videoId), {
 								liked: arrayRemove(user.uid),
 								likes: increment(-1),
 							});
 							setLiked(false);
 							setLikeCount(likeCount - 1);
 						} else {
-							await updateDoc(doc(db, 'videos', reactions.videoId), {
+							await updateDoc(doc(db, 'videos', video.videoId), {
 								liked: arrayUnion(user.uid),
 								likes: increment(1),
 							});
 							setLikeCount(likeCount + 1);
 							setLiked(true);
 							if (refUnliked.includes(user.uid)) {
-								await updateDoc(doc(db, 'videos', reactions.videoId), {
+								await updateDoc(doc(db, 'videos', video.videoId), {
 									unliked: arrayRemove(user.uid),
 									unlikes: increment(-1),
 								});
@@ -100,11 +83,11 @@ export function ReactionsButtons({ reactions }: ReactionProps) {
 			}
 		}
 	}
-	async function unlike() {
+	async function handleUnlikeVideo() {
 		if (user) {
 			setLoading(true);
 
-			const docRef = doc(db, 'videos', reactions.videoId);
+			const docRef = doc(db, 'videos', video.videoId);
 			const docGet = await getDoc(docRef);
 
 			if (docGet.exists()) {
@@ -112,21 +95,21 @@ export function ReactionsButtons({ reactions }: ReactionProps) {
 				const refLiked = docGet.data().liked;
 				if (refLiked) {
 					if (refUnliked.includes(user.uid)) {
-						await updateDoc(doc(db, 'videos', reactions.videoId), {
+						await updateDoc(doc(db, 'videos', video.videoId), {
 							unliked: arrayRemove(user.uid),
 							unlikes: increment(-1),
 						});
 						setUnliked(false);
 						setUnlikeCount(unlikeCount - 1);
 					} else {
-						await updateDoc(doc(db, 'videos', reactions.videoId), {
+						await updateDoc(doc(db, 'videos', video.videoId), {
 							unliked: arrayUnion(user.uid),
 							unlikes: increment(1),
 						});
 						setUnliked(true);
 						setUnlikeCount(unlikeCount + 1);
 						if (refLiked.includes(user.uid)) {
-							await updateDoc(doc(db, 'videos', reactions.videoId), {
+							await updateDoc(doc(db, 'videos', video.videoId), {
 								liked: arrayRemove(user.uid),
 								likes: increment(-1),
 							});
@@ -145,7 +128,7 @@ export function ReactionsButtons({ reactions }: ReactionProps) {
 			<Button
 				mr="2"
 				onClick={() => {
-					like();
+					handleLikeVideo();
 
 					isUnlikedCheck();
 				}}
@@ -177,7 +160,7 @@ export function ReactionsButtons({ reactions }: ReactionProps) {
 			<Button
 				zIndex="2"
 				onClick={() => {
-					unlike();
+					handleUnlikeVideo();
 
 					isLikedCheck();
 				}}

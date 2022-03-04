@@ -14,7 +14,7 @@ import {
 	useDisclosure,
 	useToast,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { BiVideoPlus } from 'react-icons/bi';
 import { db, putVideos } from '../../firebase/initFirebase';
 import { useProps } from '../../context/PropsContext';
@@ -36,7 +36,9 @@ export function UploadInput() {
 		md: true,
 		base: false,
 	});
-
+	useLayoutEffect(() => {
+		
+	}, [])
 	return (
 		<>
 			<Button
@@ -66,7 +68,7 @@ export function UploadInput() {
 				{isMobile && <Text>Adicione seu vídeo a plataforma</Text>}
 				<Icon as={BiVideoPlus} fontSize="28" ml={['0', '0', '4']} />
 			</Button>
-
+	
 			<Modal isCentered isOpen={isOpen} onClose={onClose}>
 				{overlay}
 				<ModalContent bg="gray.800">

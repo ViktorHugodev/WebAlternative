@@ -1,22 +1,7 @@
 import { Avatar, Box, Stack, Text } from '@chakra-ui/react';
+import { DataProps, VideosPropsArray } from '../../context/types';
 
-interface VideoProps {
-	addAt: string;
-	description: string;
-	displayName: string;
-	publishedAt: string;
-	fullName: string;
-	title: string;
-	userId: string;
-	userPhoto: string;
-	videoId: string;
-	liked: string[];
-	unliked: string[];
-}
-interface DataProps {
-	data: VideoProps;
-}
-export default function ProfileVideoCard({ data }: DataProps) {
+export default function ProfileVideoCard({ video }: VideosPropsArray) {
 	return (
 		<Box overflow="hidden">
 			<Box
@@ -27,10 +12,10 @@ export default function ProfileVideoCard({ data }: DataProps) {
 				p={[2, 4, 6]}
 			>
 				<Stack mt={6} direction={'row'} spacing={4} align={'center'}>
-					<Avatar src={data.userPhoto} />
+					<Avatar src={video.userPhoto} />
 					<Stack direction={'column'} spacing={0} fontSize={'sm'}>
-						<Text fontWeight={600}>{data.displayName}</Text>
-						<Text color={'gray.500'}>{data.fullName}</Text>
+						<Text fontWeight={600}>{video.displayName}</Text>
+						<Text color={'gray.500'}>{video.fullName}</Text>
 					</Stack>
 				</Stack>
 			</Box>

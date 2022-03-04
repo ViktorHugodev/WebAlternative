@@ -13,19 +13,6 @@ import {
 	setUserCookie,
 } from '../firebase/userCookies';
 import router from 'next/router';
-interface UserProps {
-	uid: string;
-	likes: string[];
-	unlikes: string[];
-	displayName: string;
-	email: string;
-	photoURL: string;
-	fullname: string;
-}
-
-interface User {
-	user: UserProps[];
-}
 
 const PropsContext = createContext({});
 
@@ -76,7 +63,7 @@ export function PropsProvider({ children }: any) {
 		// Firebase updates the id token every hour, this
 		// makes sure the react state and the cookie are
 		// both kept up to date
-		const cancelAuthListener = auth.onIdTokenChanged(async (user) => {
+		const cancelAuthListener = auth.onIdTokenChanged(user => {
 			if (user) {
 				const userData = user;
 				setUserCookie(JSON.stringify(userData));
@@ -92,7 +79,6 @@ export function PropsProvider({ children }: any) {
 			router.push('/');
 			return;
 		}
-		// setUser(userFromCookie);
 
 		return () => {
 			cancelAuthListener();
